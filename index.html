@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>루이스바 시우실장</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#222;
+}
+
+.hero{
+  height:320px;
+  background:url("banner.png") center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.heroText{
+  background:rgba(255,255,255,.78);
+  padding:25px 45px;
+  border-radius:18px;
+}
+
+.heroText h1{
+  margin:0;
+  font-size:42px;
+}
+
+.heroText p{
+  font-size:20px;
+}
+
+section{
+  max-width:900px;
+  margin:25px auto;
+  background:white;
+  padding:25px;
+  border-radius:16px;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+label{
+  display:block;
+  margin:12px 0;
+}
+
+input[type=number]{
+  width:90px;
+  padding:10px;
+  margin-left:8px;
+  font-size:16px;
+}
+
+.category{
+  margin-top:20px;
+}
+
+.category h3{
+  background:#111;
+  color:white;
+  padding:14px;
+  border-radius:10px;
+  font-size:18px;
+}
+
+.menuItem{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  background:#f7f7f7;
+  margin:7px 0;
+  padding:12px;
+  border-radius:10px;
+}
+
+.menuItem span{
+  flex:1;
+  line-height:1.4;
+}
+
+.result{
+  background:#111;
+  color:white;
+  padding:20px;
+  border-radius:14px;
+  margin-top:25px;
+}
+
+.result h2{
+  color:#ffd36a;
+}
+
+#resetBtn{
+  margin-top:20px;
+  width:100%;
+  padding:15px;
+  background:#d32f2f;
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  font-size:18px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+#comment{
+  white-space:pre-line;
+  font-size:18px;
+  line-height:1.6;
+}
+
+.adminBox{
+  border:2px dashed #ddd;
+}
+
+.adminInput,
+.adminTextarea{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  font-size:16px;
+}
+
+.adminTextarea{
+  height:120px;
+  resize:vertical;
+}
+
+#saveMemoBtn{
+  margin-top:12px;
+  width:100%;
+  padding:15px;
+  background:#111;
+  color:white;
+  border:none;
+  border-radius:12px;
+  font-size:18px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* 모바일 최적화 */
+@media (max-width:600px){
+  body{
+    background:#eee;
+  }
+
+  .hero{
+    height:220px;
+  }
+
+  .heroText{
+    padding:18px 28px;
+    border-radius:14px;
+  }
+
+  .heroText h1{
+    font-size:32px;
+  }
+
+  .heroText p{
+    font-size:17px;
+  }
+
+  section{
+    margin:14px 10px;
+    padding:18px;
+    border-radius:14px;
+  }
+
+  h2{
+    font-size:22px;
+  }
+
+  input[type=number]{
+    width:100%;
+    margin:8px 0 0;
+  }
+
+  .menuItem{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .menuItem input{
+    width:100%;
+  }
+
+  .result h2{
+    font-size:24px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="heroText">
+    <h1>루이스바</h1>
+    <p>시우실장</p>
+  </div>
+</header>
+
+<section>
+  <h2>실시간 안내</h2>
+  <div id="comment">등록된 안내가 없습니다.</div>
+</section>
+
+<section class="adminBox">
+  <h2>관리자 메모 수정</h2>
+
+  <label>
+    관리자 비밀번호
+    <input type="password" id="adminPw" class="adminInput" placeholder="비밀번호 입력">
+  </label>
+
+  <label>
+    안내 내용
+    <textarea id="adminMemo" class="adminTextarea" placeholder="예: 오늘 8시부터 예약 가능합니다."></textarea>
+  </label>
+
+  <button id="saveMemoBtn">실시간 안내 저장</button>
+</section>
+
+<section>
+  <h2>주대 계산기</h2>
+
+  <label>
+    이용 타임 / 1타임 50분
+    <input type="number" id="times" min="1" value="1">
+  </label>
+
+  <label>
+    파트너 인원
+    <input type="number" id="partnerCount" min="0" value="1">
+  </label>
+
+  <p>파트너 TCB: 1명당 65,000원</p>
+  <p>테이블 TCB: 1타임당 62,000원</p>
+
+  <label>
+    <input type="checkbox" id="cardPay">
+    카드 결제 / 부가세 18%
+  </label>
+
+  <button id="resetBtn" onclick="resetCalculator()">초기화</button>
+
+  <div id="menuArea"></div>
+
+  <div class="result">
+    <p>파트너 TCB: <b id="partnerTotal">0원</b></p>
+    <p>테이블 TCB: <b id="tableTotal">0원</b></p>
+    <p>메뉴 금액: <b id="menuTotal">0원</b></p>
+    <p>부가세: <b id="taxTotal">0원</b></p>
+    <h2>총 금액: <span id="grandTotal">0원</span></h2>
+  </div>
+</section>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBeur4mZc8egIhLbz3OJxYhhsYRZbdjMv4",
+  authDomain: "luois-c3e5d.firebaseapp.com",
+  databaseURL: "https://luois-c3e5d-default-rtdb.firebaseio.com",
+  projectId: "luois-c3e5d",
+  storageBucket: "luois-c3e5d.firebasestorage.app",
+  messagingSenderId: "274383238758",
+  appId: "1:274383238758:web:fdc7ad7f62c3671b72dfa7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const ADMIN_PASSWORD = "1234";
+
+const commentBox = document.getElementById("comment");
+const adminMemo = document.getElementById("adminMemo");
+const saveMemoBtn = document.getElementById("saveMemoBtn");
+
+const commentRef = ref(db, "liveMemo/comment");
+
+onValue(commentRef, snapshot => {
+  const text = snapshot.val();
+
+  if(text){
+    commentBox.innerText = text;
+    adminMemo.value = text;
+  }else{
+    commentBox.innerText = "등록된 안내가 없습니다.";
+  }
+});
+
+saveMemoBtn.addEventListener("click", async () => {
+  const pw = document.getElementById("adminPw").value;
+  const memo = adminMemo.value.trim();
+
+  if(pw !== ADMIN_PASSWORD){
+    alert("관리자 비밀번호가 틀렸습니다.");
+    return;
+  }
+
+  if(!memo){
+    alert("안내 내용을 입력해주세요.");
+    return;
+  }
+
+  await set(commentRef, memo);
+  alert("실시간 안내가 저장되었습니다.");
+});
+
+const menus = {
+  "양주": [
+    ["글렌 데일리저브",50000],["임페리얼 12년",60000],["윈저아이스",60000],
+    ["스카치블루",60000],["골든블루 사피루스",70000],["임페리얼 17년",100000],
+    ["스카치블루 17년",100000],["골든블루 다이아",110000],["글렌피딕 12년",170000],
+    ["글렌피딕 15년",210000],["조니 블랙",140000],["조니 블루",320000],
+    ["글렌도워 12년 몰트",230000],["싱글톤 더프타운 12년",230000],
+    ["발렌타인 마스터즈",140000],["잭다니엘",150000],
+    ["발렌타인 17년",220000],["발렌타인 21년",290000],
+    ["로얄살루트 21년",300000],["로얄 21년 몰트",310000]
+  ],
+  "맥주": [
+    ["테라",5000],["카프리",6000],["호가든",7000],["코로나",8000],
+    ["하이네켄",8000],["아사히",8000],["기네스",9000]
+  ],
+  "보드카 / 리큐르": [
+    ["핸드릭스",170000],["스미노프",140000],["앱솔루트",140000],
+    ["예거마이스터",150000],["아그와",160000]
+  ],
+  "와인": [
+    ["헨켈",120000],["산타 덕 꼬뜨 뒤론",120000],["빌라엠",120000],
+    ["무똥까데",120000],["1865",120000]
+  ],
+  "소주": [
+    ["소주",15000]
+  ],
+  "안주": [
+    ["과일",20000],["스팸후라이",15000],["황도",15000],["육포한치",15000],
+    ["오징어땅콩",15000],["견과류",15000],["먹태",15000]
+  ]
+};
+
+const menuArea = document.getElementById("menuArea");
+
+Object.keys(menus).forEach(category => {
+  const box = document.createElement("div");
+  box.className = "category";
+  box.innerHTML = `<h3>${category}</h3>`;
+
+  menus[category].forEach(([name, price]) => {
+    box.innerHTML += `
+      <label class="menuItem">
+        <span>${name} / ${price.toLocaleString()}원</span>
+        수량 <input type="number" class="menuQty" min="0" value="0" data-price="${price}">
+      </label>
+    `;
+  });
+
+  menuArea.appendChild(box);
+});
+
+function won(num){
+  return Math.round(num).toLocaleString("ko-KR") + "원";
+}
+
+function calculateTotal(){
+  const times = Number(document.getElementById("times").value) || 1;
+  const partnerCount = Number(document.getElementById("partnerCount").value) || 0;
+
+  const partnerTotal = times * partnerCount * 65000;
+  const tableTotal = times * 62000;
+
+  let menuTotal = 0;
+  document.querySelectorAll(".menuQty").forEach(input => {
+    const qty = Number(input.value) || 0;
+    const price = Number(input.dataset.price);
+    menuTotal += qty * price;
+  });
+
+  const beforeTax = partnerTotal + tableTotal + menuTotal;
+  const tax = document.getElementById("cardPay").checked ? Math.round(beforeTax * 0.18) : 0;
+  const grandTotal = beforeTax + tax;
+
+  document.getElementById("partnerTotal").textContent = won(partnerTotal);
+  document.getElementById("tableTotal").textContent = won(tableTotal);
+  document.getElementById("menuTotal").textContent = won(menuTotal);
+  document.getElementById("taxTotal").textContent = won(tax);
+  document.getElementById("grandTotal").textContent = won(grandTotal);
+}
+
+window.resetCalculator = function(){
+  document.getElementById("times").value = 1;
+  document.getElementById("partnerCount").value = 1;
+  document.getElementById("cardPay").checked = false;
+
+  document.querySelectorAll(".menuQty").forEach(input => {
+    input.value = 0;
+  });
+
+  calculateTotal();
+}
+
+document.addEventListener("input", calculateTotal);
+document.addEventListener("change", calculateTotal);
+calculateTotal();
+</script>
+
+</body>
+</html>

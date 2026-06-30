@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mybow112.github.io/louisbar119/sitemap.xml

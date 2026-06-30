@@ -105,6 +105,9 @@ section{
   height:100%;
   object-fit:cover;
   display:none;
+  cursor:zoom-in;
+  user-select:none;
+  -webkit-user-drag:none;
 }
 
 .slideImg.active{
@@ -113,7 +116,7 @@ section{
 
 .slideBtn{
   position:absolute;
-  top:50%;
+  top:58%;
   transform:translateY(-50%);
   background:rgba(0,0,0,.58);
   color:white;
@@ -311,6 +314,60 @@ input[type=number]{
   color:#eee;
 }
 
+/* 사진 확대 보기 */
+.photoZoomBg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:18px;
+}
+
+.photoZoomInner{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#zoomImg{
+  max-width:96vw;
+  max-height:90vh;
+  object-fit:contain;
+  border-radius:12px;
+  box-shadow:0 20px 70px rgba(0,0,0,.7);
+}
+
+.zoomCloseBtn{
+  position:absolute;
+  top:16px;
+  right:16px;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:1px solid rgba(214,173,98,.45);
+  background:rgba(0,0,0,.65);
+  color:white;
+  font-size:30px;
+  cursor:pointer;
+  z-index:1001;
+}
+
+.zoomHint{
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  color:rgba(255,255,255,.72);
+  font-size:14px;
+  white-space:nowrap;
+}
+
 @media (max-width:700px){
   .topBar{
     height:64px;
@@ -413,6 +470,14 @@ input[type=number]{
     <div class="dots" id="dots"></div>
   </div>
 </section>
+
+<div class="photoZoomBg" id="photoZoomBg">
+  <div class="photoZoomInner">
+    <button class="zoomCloseBtn" id="zoomCloseBtn">×</button>
+    <img id="zoomImg" src="" alt="확대 사진">
+    <div class="zoomHint">사진 바깥을 누르면 닫힙니다</div>
+  </div>
+</div>
 
 
 <section style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
@@ -634,28 +699,89 @@ function showSlide(index){
   if(dots[slideIndex]) dots[slideIndex].classList.add("active");
 }
 
-document.getElementById("prevBtn").onclick = () => showSlide(slideIndex - 1);
-document.getElementById("nextBtn").onclick = () => showSlide(slideIndex + 1);
+document.getElementById("prevBtn").onclick = e => {
+  e.stopPropagation();
+  showSlide(slideIndex - 1);
+};
+
+document.getElementById("nextBtn").onclick = e => {
+  e.stopPropagation();
+  showSlide(slideIndex + 1);
+};
 
 setTimeout(refreshSlides, 700);
 
-setInterval(() => {
-  showSlide(slideIndex + 1);
-}, 5000);
+/* 자동 슬라이드 제거됨: 버튼 / 점 / 손가락 넘김 / 화면 좌우 탭으로만 이동 */
 
-/* 모바일 손가락 슬라이드 */
+/* 모바일 손가락 슬라이드 + 탭 이동 */
 let touchStartX = 0;
+let touchStartY = 0;
+let touchMoved = false;
 
 slider.addEventListener("touchstart", e => {
   touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  touchMoved = false;
+});
+
+slider.addEventListener("touchmove", e => {
+  const moveX = Math.abs(e.touches[0].clientX - touchStartX);
+  const moveY = Math.abs(e.touches[0].clientY - touchStartY);
+  if(moveX > 10 || moveY > 10) touchMoved = true;
 });
 
 slider.addEventListener("touchend", e => {
   const touchEndX = e.changedTouches[0].clientX;
   const diff = touchStartX - touchEndX;
 
-  if(diff > 50) showSlide(slideIndex + 1);
-  if(diff < -50) showSlide(slideIndex - 1);
+  if(Math.abs(diff) > 50){
+    if(diff > 0) showSlide(slideIndex + 1);
+    if(diff < 0) showSlide(slideIndex - 1);
+  }
+});
+
+/* 사진 확대 */
+const photoZoomBg = document.getElementById("photoZoomBg");
+const zoomImg = document.getElementById("zoomImg");
+const zoomCloseBtn = document.getElementById("zoomCloseBtn");
+
+function openPhotoZoom(){
+  if(!slides[slideIndex]) return;
+  zoomImg.src = slides[slideIndex].src;
+  photoZoomBg.style.display = "flex";
+}
+
+function closePhotoZoom(){
+  photoZoomBg.style.display = "none";
+  zoomImg.src = "";
+}
+
+zoomCloseBtn.onclick = closePhotoZoom;
+
+photoZoomBg.addEventListener("click", e => {
+  if(e.target === photoZoomBg || e.target.classList.contains("photoZoomInner")){
+    closePhotoZoom();
+  }
+});
+
+/* 이미지 영역 탭 조작
+   - 왼쪽 35% 탭: 이전 사진
+   - 오른쪽 35% 탭: 다음 사진
+   - 가운데 탭: 확대 보기
+*/
+slider.addEventListener("click", e => {
+  if(e.target.classList.contains("slideBtn") || e.target.classList.contains("dot")) return;
+
+  const rect = slider.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+
+  if(x < rect.width * 0.35){
+    showSlide(slideIndex - 1);
+  }else if(x > rect.width * 0.65){
+    showSlide(slideIndex + 1);
+  }else{
+    openPhotoZoom();
+  }
 });
 
 /* 메뉴 데이터 */

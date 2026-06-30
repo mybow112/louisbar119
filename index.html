@@ -328,9 +328,11 @@ input[type=number]{
   }
 
   .hero{
-    height:260px;
-    background-size:cover;
+    height:240px;
+    background-size:contain;
     background-position:center center;
+    background-repeat:no-repeat;
+    background-color:#080808;
   }
 
   section{
@@ -426,7 +428,7 @@ input[type=number]{
   <div class="infoGrid">
     <div class="infoCard">
       <h3>이용 안내</h3>
-      <p>프라이빗 초이스 착석바<br>주대 하단 계산기 확인</p>
+      <p>1타임 50분 기준<br>연장 가능</p>
     </div>
     <div class="infoCard">
       <h3>주류 안내</h3>
@@ -434,7 +436,7 @@ input[type=number]{
     </div>
     <div class="infoCard">
       <h3>위치 안내</h3>
-      <p>강남 선릉역 10번 출구 도보 5분<br>테헤란로 421</p>
+      <p>강남 선릉 인근<br>프라이빗한 분위기</p>
     </div>
   </div>
 </section>
@@ -511,7 +513,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const ADMIN_PASSWORD = "4699";
+const ADMIN_PASSWORD = "1234";
 
 const commentBox = document.getElementById("comment");
 const adminMemo = document.getElementById("adminMemo");

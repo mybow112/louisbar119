@@ -11,41 +11,165 @@
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:#f5f5f5;
-  color:#222;
+  background:#080808;
+  color:#eee;
+}
+
+.topBar{
+  height:76px;
+  background:#0d0d0d;
+  color:#d6ad62;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  border-bottom:1px solid rgba(214,173,98,.25);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.logo{
+  font-size:28px;
+  letter-spacing:5px;
+  font-weight:bold;
+}
+
+.adminOpenBtn{
+  background:transparent;
+  color:#d6ad62;
+  border:1px solid #d6ad62;
+  padding:10px 15px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:bold;
 }
 
 .hero{
-  height:320px;
-  background:url("banner.png") center/cover no-repeat;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
-
-.heroText{
-  background:rgba(255,255,255,.78);
-  padding:25px 45px;
-  border-radius:18px;
-}
-
-.heroText h1{
-  margin:0;
-  font-size:42px;
-}
-
-.heroText p{
-  font-size:20px;
+  width:100%;
+  height:520px;
+  background:#080808 url("banner.png") center center / cover no-repeat;
 }
 
 section{
-  max-width:900px;
-  margin:25px auto;
-  background:white;
-  padding:25px;
-  border-radius:16px;
-  box-shadow:0 5px 18px rgba(0,0,0,.08);
+  max-width:1000px;
+  margin:24px auto;
+  background:#141414;
+  color:#eee;
+  padding:24px;
+  border-radius:18px;
+  box-shadow:0 8px 28px rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.noticeBar{
+  background:#101010;
+  color:white;
+  display:flex;
+  gap:18px;
+  align-items:center;
+  font-size:18px;
+  border:1px solid rgba(214,173,98,.35);
+}
+
+.noticeTitle{
+  color:#d6ad62;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+#comment{
+  white-space:pre-line;
+  line-height:1.7;
+  font-weight:600;
+}
+
+.photoBox{
+  padding:0;
+  overflow:hidden;
+  position:relative;
+  background:#0d0d0d;
+}
+
+.slider{
+  width:100%;
+  height:520px;
+  position:relative;
+  background:#000;
+  overflow:hidden;
+}
+
+.slideImg{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.slideImg.active{
+  display:block;
+}
+
+.slideBtn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,.58);
+  color:white;
+  border:1px solid rgba(214,173,98,.35);
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:26px;
+  z-index:5;
+}
+
+.prevBtn{left:14px}
+.nextBtn{right:14px}
+
+.dots{
+  position:absolute;
+  bottom:16px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  z-index:5;
+}
+
+.dot{
+  width:9px;
+  height:9px;
+  background:rgba(255,255,255,.55);
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.dot.active{
+  background:#d6ad62;
+}
+
+.infoGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.infoCard{
+  text-align:center;
+  padding:22px;
+  border-right:1px solid rgba(255,255,255,.12);
+  color:#eee;
+}
+
+.infoCard:last-child{
+  border-right:none;
+}
+
+.infoCard h3{
+  color:#d6ad62;
 }
 
 label{
@@ -54,22 +178,25 @@ label{
 }
 
 input[type=number]{
-  width:90px;
+  width:100px;
   padding:10px;
   margin-left:8px;
   font-size:16px;
+  background:#222;
+  color:#fff;
+  border:1px solid #444;
+  border-radius:8px;
 }
 
-.category{
-  margin-top:20px;
-}
+.category{margin-top:20px}
 
 .category h3{
-  background:#111;
-  color:white;
+  background:#000;
+  color:#d6ad62;
   padding:14px;
   border-radius:10px;
   font-size:18px;
+  border:1px solid rgba(214,173,98,.2);
 }
 
 .menuItem{
@@ -77,10 +204,12 @@ input[type=number]{
   justify-content:space-between;
   align-items:center;
   gap:10px;
-  background:#f7f7f7;
+  background:#202020;
+  color:#eee;
   margin:7px 0;
   padding:12px;
   border-radius:10px;
+  border:1px solid rgba(255,255,255,.06);
 }
 
 .menuItem span{
@@ -89,16 +218,15 @@ input[type=number]{
 }
 
 .result{
-  background:#111;
+  background:#000;
   color:white;
   padding:20px;
   border-radius:14px;
   margin-top:25px;
+  border:1px solid rgba(214,173,98,.25);
 }
 
-.result h2{
-  color:#ffd36a;
-}
+.result h2{color:#ffd36a}
 
 #resetBtn{
   margin-top:20px;
@@ -113,14 +241,31 @@ input[type=number]{
   font-weight:bold;
 }
 
-#comment{
-  white-space:pre-line;
-  font-size:18px;
-  line-height:1.6;
+.modalBg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  padding:20px;
 }
 
-.adminBox{
-  border:2px dashed #ddd;
+.modal{
+  background:#151515;
+  color:#eee;
+  width:100%;
+  max-width:460px;
+  border-radius:18px;
+  padding:24px;
+  border:1px solid rgba(214,173,98,.35);
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+.modal h2{
+  margin-top:0;
+  color:#d6ad62;
 }
 
 .adminInput,
@@ -128,60 +273,98 @@ input[type=number]{
   width:100%;
   padding:12px;
   margin-top:8px;
-  border:1px solid #ccc;
+  border:1px solid #444;
   border-radius:10px;
   font-size:16px;
+  background:#222;
+  color:white;
 }
 
 .adminTextarea{
-  height:120px;
+  height:130px;
   resize:vertical;
 }
 
-#saveMemoBtn{
-  margin-top:12px;
-  width:100%;
-  padding:15px;
-  background:#111;
-  color:white;
+.modalBtns{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+
+.modalBtns button{
+  flex:1;
+  padding:13px;
   border:none;
-  border-radius:12px;
-  font-size:18px;
+  border-radius:10px;
+  font-size:16px;
   cursor:pointer;
   font-weight:bold;
 }
 
-/* 모바일 최적화 */
-@media (max-width:600px){
-  body{
-    background:#eee;
+#saveMemoBtn{
+  background:#d6ad62;
+  color:#111;
+}
+
+#closeModalBtn{
+  background:#333;
+  color:#eee;
+}
+
+@media (max-width:700px){
+  .topBar{
+    height:64px;
+    padding:0 14px;
+  }
+
+  .logo{
+    font-size:21px;
+    letter-spacing:3px;
+  }
+
+  .adminOpenBtn{
+    padding:8px 11px;
+    font-size:12px;
   }
 
   .hero{
-    height:220px;
-  }
-
-  .heroText{
-    padding:18px 28px;
-    border-radius:14px;
-  }
-
-  .heroText h1{
-    font-size:32px;
-  }
-
-  .heroText p{
-    font-size:17px;
+    height:260px;
+    background-size:cover;
+    background-position:center center;
   }
 
   section{
     margin:14px 10px;
     padding:18px;
-    border-radius:14px;
   }
 
-  h2{
+  .noticeBar{
+    font-size:16px;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .slider{
+    height:330px;
+  }
+
+  .slideBtn{
+    width:38px;
+    height:38px;
     font-size:22px;
+  }
+
+  .infoGrid{
+    grid-template-columns:1fr;
+  }
+
+  .infoCard{
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,.12);
+  }
+
+  .infoCard:last-child{
+    border-bottom:none;
   }
 
   input[type=number]{
@@ -197,42 +380,63 @@ input[type=number]{
   .menuItem input{
     width:100%;
   }
-
-  .result h2{
-    font-size:24px;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<header class="hero">
-  <div class="heroText">
-    <h1>루이스바</h1>
-    <p>시우실장</p>
-  </div>
-</header>
+<div class="topBar">
+  <div class="logo">LOUIS BAR</div>
+  <button class="adminOpenBtn" id="openModalBtn">⚙ 공지 수정</button>
+</div>
 
-<section>
-  <h2>실시간 안내</h2>
+<header class="hero"></header>
+
+<section class="noticeBar">
+  <div class="noticeTitle">📢 실시간 안내</div>
   <div id="comment">등록된 안내가 없습니다.</div>
 </section>
 
-<section class="adminBox">
-  <h2>관리자 메모 수정</h2>
+<section class="photoBox">
+  <div class="slider" id="slider">
+    <button class="slideBtn prevBtn" id="prevBtn">‹</button>
+    <button class="slideBtn nextBtn" id="nextBtn">›</button>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
 
-  <label>
-    관리자 비밀번호
-    <input type="password" id="adminPw" class="adminInput" placeholder="비밀번호 입력">
-  </label>
 
-  <label>
-    안내 내용
-    <textarea id="adminMemo" class="adminTextarea" placeholder="예: 오늘 8시부터 예약 가능합니다."></textarea>
-  </label>
+<section style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+  <a href="https://open.kakao.com/o/sKo00TBi" target="_blank"
+     style="background:#FEE500;color:#111;text-decoration:none;padding:16px 28px;
+     border-radius:12px;font-weight:bold;font-size:18px;">
+     💬 카카오톡 문의
+  </a>
 
-  <button id="saveMemoBtn">실시간 안내 저장</button>
+  <a href="tel:01031982328"
+     style="background:#d6ad62;color:#111;text-decoration:none;padding:16px 28px;
+     border-radius:12px;font-weight:bold;font-size:18px;">
+     📞 전화 문의
+  </a>
+</section>
+
+
+<section>
+  <div class="infoGrid">
+    <div class="infoCard">
+      <h3>이용 안내</h3>
+      <p>프라이빗 초이스 착석바<br>주대 하단 계산기 확인</p>
+    </div>
+    <div class="infoCard">
+      <h3>주류 안내</h3>
+      <p>위스키 5만원부터<br>맥주 5천원부터</p>
+    </div>
+    <div class="infoCard">
+      <h3>위치 안내</h3>
+      <p>강남 선릉역 10번 출구 도보 5분<br>테헤란로 421</p>
+    </div>
+  </div>
 </section>
 
 <section>
@@ -269,6 +473,27 @@ input[type=number]{
   </div>
 </section>
 
+<div class="modalBg" id="modalBg">
+  <div class="modal">
+    <h2>공지 수정</h2>
+
+    <label>
+      관리자 비밀번호
+      <input type="password" id="adminPw" class="adminInput" placeholder="비밀번호 입력">
+    </label>
+
+    <label>
+      안내 내용
+      <textarea id="adminMemo" class="adminTextarea" placeholder="예: 오늘 8시부터 예약 가능합니다."></textarea>
+    </label>
+
+    <div class="modalBtns">
+      <button id="closeModalBtn">닫기</button>
+      <button id="saveMemoBtn">저장</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
@@ -286,23 +511,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const ADMIN_PASSWORD = "1234";
+const ADMIN_PASSWORD = "4699";
 
 const commentBox = document.getElementById("comment");
 const adminMemo = document.getElementById("adminMemo");
 const saveMemoBtn = document.getElementById("saveMemoBtn");
+const modalBg = document.getElementById("modalBg");
 
 const commentRef = ref(db, "liveMemo/comment");
 
 onValue(commentRef, snapshot => {
   const text = snapshot.val();
+  commentBox.innerText = text || "등록된 안내가 없습니다.";
+  if(text) adminMemo.value = text;
+});
 
-  if(text){
-    commentBox.innerText = text;
-    adminMemo.value = text;
-  }else{
-    commentBox.innerText = "등록된 안내가 없습니다.";
-  }
+document.getElementById("openModalBtn").onclick = () => modalBg.style.display = "flex";
+document.getElementById("closeModalBtn").onclick = () => modalBg.style.display = "none";
+
+modalBg.addEventListener("click", e => {
+  if(e.target === modalBg) modalBg.style.display = "none";
 });
 
 saveMemoBtn.addEventListener("click", async () => {
@@ -321,8 +549,108 @@ saveMemoBtn.addEventListener("click", async () => {
 
   await set(commentRef, memo);
   alert("실시간 안내가 저장되었습니다.");
+  modalBg.style.display = "none";
 });
 
+/* 사진은 photo1.jpg ~ photo10.jpg까지 사용 */
+const photoList = [
+  "photo1.jpg",
+  "photo2.jpg",
+  "photo3.jpg",
+  "photo4.jpg",
+  "photo5.jpg",
+  "photo6.jpg",
+  "photo7.jpg",
+  "photo8.jpg",
+  "photo9.jpg",
+  "photo10.jpg"
+];
+
+const slider = document.getElementById("slider");
+const dotsBox = document.getElementById("dots");
+let slides = [];
+let slideIndex = 0;
+
+photoList.forEach((src, index) => {
+  const img = document.createElement("img");
+  img.src = src;
+  img.className = "slideImg";
+  img.onerror = function(){
+    this.remove();
+    refreshSlides();
+  };
+
+  if(index === 0) img.classList.add("active");
+
+  slider.insertBefore(img, dotsBox);
+});
+
+function refreshSlides(){
+  slides = Array.from(document.querySelectorAll(".slideImg"));
+
+  if(slides.length === 0){
+    const img = document.createElement("img");
+    img.src = "banner.png";
+    img.className = "slideImg active";
+    slider.insertBefore(img, dotsBox);
+    slides = [img];
+  }
+
+  if(slideIndex >= slides.length) slideIndex = 0;
+
+  dotsBox.innerHTML = "";
+  slides.forEach((_, i) => {
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    if(i === slideIndex) dot.classList.add("active");
+    dot.onclick = () => showSlide(i);
+    dotsBox.appendChild(dot);
+  });
+
+  showSlide(slideIndex);
+}
+
+function showSlide(index){
+  if(slides.length === 0) return;
+
+  if(index < 0) index = slides.length - 1;
+  if(index >= slides.length) index = 0;
+
+  slides.forEach(img => img.classList.remove("active"));
+  document.querySelectorAll(".dot").forEach(dot => dot.classList.remove("active"));
+
+  slideIndex = index;
+  slides[slideIndex].classList.add("active");
+
+  const dots = document.querySelectorAll(".dot");
+  if(dots[slideIndex]) dots[slideIndex].classList.add("active");
+}
+
+document.getElementById("prevBtn").onclick = () => showSlide(slideIndex - 1);
+document.getElementById("nextBtn").onclick = () => showSlide(slideIndex + 1);
+
+setTimeout(refreshSlides, 700);
+
+setInterval(() => {
+  showSlide(slideIndex + 1);
+}, 5000);
+
+/* 모바일 손가락 슬라이드 */
+let touchStartX = 0;
+
+slider.addEventListener("touchstart", e => {
+  touchStartX = e.touches[0].clientX;
+});
+
+slider.addEventListener("touchend", e => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const diff = touchStartX - touchEndX;
+
+  if(diff > 50) showSlide(slideIndex + 1);
+  if(diff < -50) showSlide(slideIndex - 1);
+});
+
+/* 메뉴 데이터 */
 const menus = {
   "양주": [
     ["글렌 데일리저브",50000],["임페리얼 12년",60000],["윈저아이스",60000],
